@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  admin-users:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: deno run --allow-net --allow-env index.ts

@@ -1,0 +1,20 @@
+{
+  "name": "admin-users-edge-function",
+  "version": "1.0.0",
+  "description": "Edge Function for managing users in OZ system",
+  "main": "index.ts",
+  "scripts": {
+    "deploy": "supabase functions deploy admin-users --project-ref htvbbyoghtoionbvzekw",
+    "dev": "supabase functions serve admin-users --project-ref htvbbyoghtoionbvzekw",
+    "test": "deno test --allow-net --allow-env"
+  },
+  "keywords": [
+    "supabase",
+    "edge-function",
+    "admin",
+    "users",
+    "cors"
+  ],
+  "author": "OZ Team",
+  "license": "MIT"
+}
