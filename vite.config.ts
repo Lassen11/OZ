@@ -32,6 +32,10 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     target: 'esnext',
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'esbuild',
     modulePreload: {
       polyfill: false,
     },

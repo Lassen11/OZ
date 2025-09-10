@@ -1,73 +1,92 @@
-# Welcome to your Lovable project
+# OZ - Личный кабинет клиентов
 
-## Project info
+Система управления клиентами юридической компании по банкротству физических лиц.
 
-**URL**: https://lovable.dev/projects/07565606-a4e1-4423-9d95-d65e00f2ae1e
+## 🚀 Технологии
 
-## How can I edit this code?
+- **Frontend:** React 18 + TypeScript
+- **UI:** Tailwind CSS + shadcn/ui
+- **Сборка:** Vite
+- **Роутинг:** React Router
+- **Состояние:** React Query + Context API
+- **База данных:** Supabase
 
-There are several ways of editing your application.
+## 📦 Установка
 
-**Use Lovable**
+```bash
+# Установка зависимостей
+npm install
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/07565606-a4e1-4423-9d95-d65e00f2ae1e) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Запуск в режиме разработки
 npm run dev
+
+# Сборка для продакшена
+npm run build
+
+# Предварительный просмотр сборки
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+## 🔧 Настройка
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. Скопируйте `.env.example` в `.env.local`
+2. Заполните переменные окружения для Supabase
+3. Запустите `npm run dev`
 
-**Use GitHub Codespaces**
+## 🐳 Docker
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+# Сборка образа
+docker build -t oz-app .
 
-## What technologies are used for this project?
+# Запуск контейнера
+docker run -p 80:80 oz-app
 
-This project is built with:
+# Или через docker-compose
+docker-compose up
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🌐 Деплой
 
-## How can I deploy this project?
+### Timeweb Cloud
+Приложение уже настроено для деплоя в Timeweb Cloud:
+- **URL:** lassen11-oz-439e.twc1.net
+- **IP:** 82.97.243.54
 
-Simply open [Lovable](https://lovable.dev/projects/07565606-a4e1-4423-9d95-d65e00f2ae1e) and click on Share -> Publish.
+### Vercel
+```bash
+npm install -g vercel
+vercel --prod
+```
 
-## Can I connect a custom domain to my Lovable project?
+### Netlify
+```bash
+npm install -g netlify-cli
+netlify deploy --prod
+```
 
-Yes, you can!
+## 📁 Структура проекта
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```
+src/
+├── components/          # React компоненты
+│   ├── ui/             # UI компоненты (shadcn/ui)
+│   └── ...             # Бизнес компоненты
+├── contexts/           # React контексты
+├── hooks/              # Кастомные хуки
+├── integrations/       # Интеграции (Supabase)
+├── lib/                # Утилиты
+├── pages/              # Страницы приложения
+└── main.tsx           # Точка входа
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 🔒 Безопасность
+
+- Все API запросы защищены через Supabase RLS
+- JWT токены для аутентификации
+- Валидация данных через Zod
+- Защита от XSS и CSRF
+
+## 📝 Лицензия
+
+MIT License
