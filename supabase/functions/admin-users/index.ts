@@ -4,11 +4,26 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Max-Age': '86400',
 }
 
 serve(async (req) => {
+  console.log(`Request method: ${req.method}, URL: ${req.url}`);
+  
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    console.log('Handling CORS preflight request');
+    return new Response(null, { 
+      status: 200,
+      headers: {
+        ...corsHeaders,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+        'Access-Control-Max-Age': '86400',
+      }
+    })
   }
 
   try {
@@ -88,6 +103,7 @@ serve(async (req) => {
         return new Response(
           JSON.stringify({ users: users.users }),
           { 
+            status: 200,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
           }
         )
@@ -125,6 +141,7 @@ serve(async (req) => {
               return new Response(
                 JSON.stringify({ user: { id: userId, email: existingUser.email }, message: 'Пользователь уже существует с этой ролью' }),
                 { 
+                  status: 200,
                   headers: { ...corsHeaders, 'Content-Type': 'application/json' }
                 }
               )
@@ -209,6 +226,7 @@ serve(async (req) => {
         return new Response(
           JSON.stringify({ user: { id: userId, email } }),
           { 
+            status: 200,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
           }
         )
@@ -313,6 +331,7 @@ serve(async (req) => {
         return new Response(
           JSON.stringify({ success: true, message: 'User deleted successfully' }),
           { 
+            status: 200,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
           }
         )
@@ -328,6 +347,7 @@ serve(async (req) => {
     }
 
   } catch (error) {
+    console.error('Edge function error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
