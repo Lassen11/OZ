@@ -241,29 +241,38 @@ export const UserManagement = ({ onUserUpdate }: UserManagementProps) => {
   };
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+    if (!confirm('Вы уверены, что хотите удалить этого пользователя? Это действие нельзя отменить.')) {
       return;
     }
 
     try {
-      // Удаляем пользователя через Edge Function
+      // Проверяем сессию
       const { data: session } = await supabase.auth.getSession();
-      const response = await fetch(`https://htvbbyoghtoionbvzekw.supabase.co/functions/v1/admin-users?userId=${userId}`, {
+      
+      if (!session?.session?.access_token) {
+        throw new Error('Нет авторизации для выполнения операции');
+      }
+
+      // Удаляем пользователя через Edge Function
+      const response = await fetch(`https://htvbbyoghtoionbvzekw.supabase.co/functions/v1/admin-users`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${session?.session?.access_token}`,
+          'Authorization': `Bearer ${session.session.access_token}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ userId }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Ошибка удаления пользователя');
+        throw new Error(errorData.error || `Ошибка удаления пользователя (${response.status})`);
       }
 
+      const result = await response.json();
+      
       toast({
         title: "Успешно",
-        description: "Пользователь удален",
+        description: result.message || "Пользователь удален",
       });
 
       fetchUsers();

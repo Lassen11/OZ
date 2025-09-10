@@ -216,7 +216,22 @@ serve(async (req) => {
       case 'DELETE':
         // Delete user
         console.log('DELETE request received');
-        const { userId: userIdToDelete } = await req.json()
+        
+        let userIdToDelete: string;
+        try {
+          const body = await req.json();
+          userIdToDelete = body.userId;
+        } catch (parseError) {
+          console.error('Error parsing request body:', parseError);
+          return new Response(
+            JSON.stringify({ error: 'Invalid request body' }),
+            { 
+              status: 400,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+            }
+          )
+        }
+        
         console.log('User ID to delete:', userIdToDelete);
         
         if (!userIdToDelete) {
@@ -230,17 +245,73 @@ serve(async (req) => {
           )
         }
 
+        // Проверяем, что пользователь не пытается удалить себя
+        if (userIdToDelete === user.id) {
+          return new Response(
+            JSON.stringify({ error: 'Cannot delete your own account' }),
+            { 
+              status: 400,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+            }
+          )
+        }
+
         console.log('Attempting to delete user:', userIdToDelete);
+        
+        // Сначала удаляем связанные данные из базы
+        try {
+          // Удаляем роли пользователя
+          await supabaseAdmin
+            .from('user_roles')
+            .delete()
+            .eq('user_id', userIdToDelete);
+
+          // Удаляем профиль пользователя
+          await supabaseAdmin
+            .from('profiles')
+            .delete()
+            .eq('user_id', userIdToDelete);
+
+          // Удаляем клиентов пользователя
+          await supabaseAdmin
+            .from('clients')
+            .delete()
+            .eq('user_id', userIdToDelete);
+
+          // Удаляем платежи пользователя
+          await supabaseAdmin
+            .from('payments')
+            .delete()
+            .eq('user_id', userIdToDelete);
+
+          // Удаляем квитанции пользователя
+          await supabaseAdmin
+            .from('payment_receipts')
+            .delete()
+            .eq('user_id', userIdToDelete);
+
+        } catch (dbError) {
+          console.error('Error deleting user data from database:', dbError);
+          // Продолжаем удаление пользователя даже если есть ошибки с данными
+        }
+
+        // Удаляем пользователя из Auth
         const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userIdToDelete)
         
         if (deleteError) {
           console.error('Delete error:', deleteError);
-          throw deleteError
+          return new Response(
+            JSON.stringify({ error: `Failed to delete user: ${deleteError.message}` }),
+            { 
+              status: 500,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+            }
+          )
         }
 
         console.log('User deleted successfully');
         return new Response(
-          JSON.stringify({ success: true }),
+          JSON.stringify({ success: true, message: 'User deleted successfully' }),
           { 
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
           }

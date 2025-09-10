@@ -215,29 +215,30 @@ export const AdminPanel = () => {
       console.log('DELETE response status:', response.status);
       
       if (response.ok) {
-        console.log('Employee deleted successfully');
+        const result = await response.json();
+        console.log('Employee deleted successfully:', result);
         toast({
           title: "Успешно",
-          description: `Сотрудник ${fullName} был удален`,
+          description: result.message || `Сотрудник ${fullName} был удален`,
         });
         
         // Обновляем данные
         fetchAdminMetrics();
         fetchEmployeeStats();
       } else {
-        const errorText = await response.text();
-        console.error('DELETE request failed:', errorText);
+        const errorData = await response.json();
+        console.error('DELETE request failed:', errorData);
         toast({
           title: "Ошибка",
-          description: `Не удалось удалить сотрудника: ${errorText}`,
+          description: errorData.error || `Не удалось удалить сотрудника (${response.status})`,
           variant: "destructive",
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Ошибка при удалении сотрудника:', error);
       toast({
         title: "Ошибка",
-        description: "Произошла ошибка при удалении сотрудника",
+        description: error.message || "Произошла ошибка при удалении сотрудника",
         variant: "destructive",
       });
     }
