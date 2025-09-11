@@ -1,27 +1,42 @@
-# Настройка MIME-типов для ES модулей
-<IfModule mod_mime.c>
-    AddType application/javascript .js
-    AddType application/javascript .mjs
-    AddType application/javascript .jsx
-    AddType application/javascript .ts
-    AddType application/javascript .tsx
-</IfModule>
+# MIME types для правильной работы модулей
+AddType application/javascript .js
+AddType application/json .json
 
-# Настройка CORS для модулей
-<IfModule mod_headers.c>
-    Header always set Access-Control-Allow-Origin "*"
-    Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
-    Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
-</IfModule>
+# CORS заголовки
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization"
 
-# Кэширование для статических ресурсов
+# Кэширование статических файлов
 <IfModule mod_expires.c>
     ExpiresActive On
-    ExpiresByType application/javascript "access plus 1 year"
     ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
     ExpiresByType image/jpg "access plus 1 year"
     ExpiresByType image/jpeg "access plus 1 year"
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
 </IfModule>
+
+# Сжатие файлов
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# SPA routing - все запросы перенаправляем на index.html
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
