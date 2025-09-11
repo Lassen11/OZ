@@ -1,0 +1,43 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Основание весов -->
+  <rect x="30" y="56" width="4" height="8" fill="#1A202C" rx="1"/>
+  
+  <!-- Стойка весов -->
+  <rect x="31" y="16" width="2" height="40" fill="#1A202C"/>
+  
+  <!-- Поперечная балка -->
+  <rect x="8" y="16" width="48" height="3" fill="#1A202C" rx="1.5"/>
+  
+  <!-- Левая чаша весов -->
+  <ellipse cx="16" cy="24" rx="8" ry="2" fill="#4A5568" stroke="#1A202C" stroke-width="1"/>
+  <path d="M8 24 Q16 20 24 24" fill="none" stroke="#1A202C" stroke-width="2"/>
+  <path d="M8 24 Q16 28 24 24" fill="none" stroke="#1A202C" stroke-width="2"/>
+  
+  <!-- Правая чаша весов -->
+  <ellipse cx="48" cy="24" rx="8" ry="2" fill="#4A5568" stroke="#1A202C" stroke-width="1"/>
+  <path d="M40 24 Q48 20 56 24" fill="none" stroke="#1A202C" stroke-width="2"/>
+  <path d="M40 24 Q48 28 56 24" fill="none" stroke="#1A202C" stroke-width="2"/>
+  
+  <!-- Цепочки левой чаши -->
+  <line x1="16" y1="16" x2="16" y2="22" stroke="#1A202C" stroke-width="1.5"/>
+  <line x1="16" y1="22" x2="12" y2="26" stroke="#1A202C" stroke-width="1"/>
+  <line x1="16" y1="22" x2="20" y2="26" stroke="#1A202C" stroke-width="1"/>
+  
+  <!-- Цепочки правой чаши -->
+  <line x1="48" y1="16" x2="48" y2="22" stroke="#1A202C" stroke-width="1.5"/>
+  <line x1="48" y1="22" x2="44" y2="26" stroke="#1A202C" stroke-width="1"/>
+  <line x1="48" y1="22" x2="52" y2="26" stroke="#1A202C" stroke-width="1"/>
+  
+  <!-- Меч правосудия -->
+  <rect x="31" y="8" width="2" height="12" fill="#2D3748" rx="1"/>
+  <path d="M30 8 L34 8 L33 4 Z" fill="#2D3748"/>
+  <rect x="30.5" y="20" width="3" height="2" fill="#2D3748" rx="0.5"/>
+  
+  <!-- Символы справедливости -->
+  <text x="16" y="28" font-family="serif" font-size="8" fill="#1A202C" text-anchor="middle">⚖</text>
+  <text x="48" y="28" font-family="serif" font-size="8" fill="#1A202C" text-anchor="middle">⚖</text>
+  
+  <!-- Декоративные элементы -->
+  <circle cx="16" cy="18" r="1" fill="#2D3748"/>
+  <circle cx="48" cy="18" r="1" fill="#2D3748"/>
+</svg>
